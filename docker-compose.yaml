@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  tourism-service-app:
+    build: .
+    image: spring-boot-sample-app:v1
+    container_name: tourism-service-container
+    ports:
+      - "8080:8010"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mariadb://tourism-mariadb-server:3306/tourism_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: tp
+      SPRING_PROFILES_ACTIVE: live_docker
+    depends_on:
+      tourism-mariadb-server:
+        condition: service_healthy
+      tourism-redis-server:
+        condition: service_healthy
+    networks:
+      - tourism-network
+    restart: unless-stopped
+
+  tourism-mariadb-server:
+    image: mariadb:11
+    container_name: tourism-mariadb-container
+    environment:
+      MYSQL_ROOT_PASSWORD: tp
+      MYSQL_DATABASE: tourism_db
+    healthcheck:
+      test: ["CMD", "mariadb-admin", "ping", "-h", "localhost", "-u", "root", "-ptp"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 60s
+    networks:
+      - tourism-network
+    restart: unless-stopped
+
+  tourism-redis-server:
+    image: redis:7.2
+    container_name: tourism-redis-container
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
+    networks:
+      - tourism-network
+    restart: unless-stopped
+
+networks:
+  tourism-network:
+    driver: bridge

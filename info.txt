@@ -1,0 +1,41 @@
+Spring dependencies added by spring initializer :
+
+Spring Web [WEB]
+Validation [I/O]
+Lombok [DEVELOPER TOOLS]
+Spring Data JPA [SQL]
+MariaDB Driver [SQL]
+Flyway Migration [SQL]
+Spring Cache Abstraction [I/O]
+Spring Security [Security]
+
+Spring dependencies added externally :
+
+<dependency>
+    <groupId>io.jsonwebtoken</groupId>
+    <artifactId>jjwt-api</artifactId>
+    <version>0.11.5</version>
+</dependency>
+
+<dependency>
+    <groupId>io.jsonwebtoken</groupId>
+    <artifactId>jjwt-impl</artifactId>
+    <version>0.11.5</version>
+    <scope>runtime</scope>
+</dependency>
+
+<dependency>
+    <groupId>io.jsonwebtoken</groupId>
+    <artifactId>jjwt-jackson</artifactId>
+    <version>0.11.5</version>
+    <scope>runtime</scope>
+</dependency>
+
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-data-redis</artifactId>
+</dependency>
+
+'JwtSecretConfigs.java' file content :
+
+private final String secretKey = "";
