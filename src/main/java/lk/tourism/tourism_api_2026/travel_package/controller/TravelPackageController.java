@@ -18,13 +18,14 @@ import java.util.List;
 
 @Slf4j
 @RestController
+@RequestMapping(value = "/travel-packages")
 @RequiredArgsConstructor
 public class TravelPackageController {
 
     private final TravelPackageService travelPackageService;
 
     @RolesAllowed({"ADMIN", "TOUR_GUIDE"})
-    @PostMapping(value = "/travel-packages/add-travel-package", headers = "X-Api-Version=v1")
+    @PostMapping(value = "/add-travel-package", headers = "X-Api-Version=v1")
     @ResponseStatus(HttpStatus.CREATED)
     public void createTravelPackage(@Valid @RequestBody CreateTravelPackageRequest rq){
 
@@ -35,7 +36,7 @@ public class TravelPackageController {
     }
 
     @RolesAllowed({"ADMIN", "TOUR_GUIDE", "TOURIST"})
-    @GetMapping(value = "/travel-packages/view-all-travel-packages-with-code", headers = "X-Api-Version=v1")
+    @GetMapping(value = "/view-all-travel-packages-with-code", headers = "X-Api-Version=v1")
     public List<TravelPackageItemWithCode> viewAllTravelPackagesWithCode(
             @RequestParam("section-number") Integer sectionNumber) {
 
