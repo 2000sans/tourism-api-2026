@@ -48,16 +48,15 @@ public class TestController {
     @GetMapping("/tour-guide")
     public ResponseEntity<String> tourGuideEndpoint(@AuthenticationPrincipal User user) {
         log.info("@AuthenticationPrincipal of user [{}]", user);
-        return ResponseEntity.ok("This is a tour guide endpoint - accessible by TOUR_GUIDE");
+        return ResponseEntity.ok("This is a tour guide endpoint - accessible by ROLE_TOUR_GUIDE");
     }
 
     @RolesAllowed({"TOURIST"})
     @GetMapping("/tourist")
     public ResponseEntity<String> touristEndpoint(@AuthenticationPrincipal User user) {
         log.info("@AuthenticationPrincipal of user [{}]", user);
-        return ResponseEntity.ok("This is a tourist endpoint - accessible by TOURIST");
+        return ResponseEntity.ok("This is a tourist endpoint - accessible by ROLE_TOURIST");
     }
-
 
     @RolesAllowed("ADMIN")
     @GetMapping("/admin")
