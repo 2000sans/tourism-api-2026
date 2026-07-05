@@ -23,7 +23,6 @@ public class TravelPackage {
     private Integer memberCount;
     private String estimatedDuration;
     private BigDecimal totalPrice;
-    private Float reservationAdmissionPercentage;
 
     @Enumerated(EnumType.STRING)
     private TravelPackageStatus travelPackageStatus;

@@ -63,7 +63,6 @@ public class TravelPackageController {
                     .memberCount(modelObjectOne.getMemberCount())
                     .estimatedDuration(modelObjectOne.getEstimatedDuration())
                     .totalPrice(modelObjectOne.getTotalPrice())
-                    .reservationAdmissionPercentage(modelObjectOne.getReservationAdmissionPercentage())
                     .travelPackageStatus(modelObjectOne.getTravelPackageStatus())
                     .visitingLocations(new ArrayList<>())
                     .build();
@@ -121,7 +120,6 @@ public class TravelPackageController {
                     .memberCount(modelObjectOne.getMemberCount())
                     .estimatedDuration(modelObjectOne.getEstimatedDuration())
                     .totalPrice(modelObjectOne.getTotalPrice())
-                    .reservationAdmissionPercentage(modelObjectOne.getReservationAdmissionPercentage())
                     .visitingLocations(new ArrayList<>())
                     .build();
 

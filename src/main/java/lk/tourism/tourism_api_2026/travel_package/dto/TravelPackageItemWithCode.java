@@ -20,7 +20,6 @@ public class TravelPackageItemWithCode {
     private Integer memberCount;
     private String estimatedDuration;
     private BigDecimal totalPrice;
-    private Float reservationAdmissionPercentage;
     private TravelPackageStatus travelPackageStatus;
     private List<TravelPackageDetailItemWithCode> visitingLocations;
 

@@ -43,7 +43,6 @@ public class TravelPackageServiceImpl implements TravelPackageService {
         travelPackage.setMemberCount(rq.getMemberCount());
         travelPackage.setEstimatedDuration(rq.getEstimatedDuration());
         travelPackage.setTotalPrice( BigDecimal.valueOf(rq.getTotalPrice()).setScale(2, RoundingMode.HALF_EVEN) );
-        travelPackage.setReservationAdmissionPercentage(rq.getReservationAdmPercent());
         travelPackage.setTravelPackageStatus(TravelPackageStatus.ACTIVE);
         travelPackage.setTravelPackageDetailList(new ArrayList<>());
 

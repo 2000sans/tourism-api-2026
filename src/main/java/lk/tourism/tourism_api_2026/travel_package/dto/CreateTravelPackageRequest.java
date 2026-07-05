@@ -32,11 +32,6 @@ public class CreateTravelPackageRequest {
     @DecimalMax(value = "100000.0", message = "total price cannot exceed 100,000")
     private Double totalPrice;
 
-    @NotNull(message = "reservation admission percentage is required")
-    @DecimalMin(value = "0.0", inclusive = false, message = "reservation admission percentage must be greater than 0")
-    @DecimalMax(value = "1.0", inclusive = false, message = "reservation admission percentage must be less than 1")
-    private Float reservationAdmPercent;
-
     @NotEmpty(message = "at least one visiting location is required")
     @Size(max = 10, message = "visiting locations cannot exceed 10")
     @Valid

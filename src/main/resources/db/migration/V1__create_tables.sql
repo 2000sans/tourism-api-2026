@@ -16,7 +16,6 @@ CREATE TABLE travel_packages (
                                  member_count INTEGER,
                                  estimated_duration VARCHAR(255),
                                  total_price DECIMAL(8,2),
-                                 reservation_admission_percentage FLOAT,
                                  travel_package_status ENUM('ACTIVE','ARCHIVED','INACTIVE')
 );
 

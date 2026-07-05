@@ -19,7 +19,6 @@ public class TravelPackageItemWithoutCode implements Serializable {
     private Integer memberCount;
     private String estimatedDuration;
     private BigDecimal totalPrice;
-    private Float reservationAdmissionPercentage;
     private List<TravelPackageDetailItemWithoutCode> visitingLocations;
 
 }
