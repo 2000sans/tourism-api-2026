@@ -27,7 +27,7 @@ public class TravelPackage {
     @Enumerated(EnumType.STRING)
     private TravelPackageStatus travelPackageStatus;
 
-    @OneToMany(mappedBy = "travelPackage", cascade = CascadeType.PERSIST, orphanRemoval=true)
+    @OneToMany(mappedBy = "travelPackage", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval=true)
     private List<TravelPackageDetail> travelPackageDetailList;
 
 }

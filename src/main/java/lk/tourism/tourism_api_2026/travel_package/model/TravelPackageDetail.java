@@ -21,7 +21,7 @@ public class TravelPackageDetail {
     @Column(name = "google_map_url")
     private String googleMapURL;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private TravelPackage travelPackage;
 
 }
