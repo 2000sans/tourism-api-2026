@@ -6,19 +6,20 @@ import lombok.Data;
 import tools.jackson.databind.PropertyNamingStrategies;
 import tools.jackson.databind.annotation.JsonNaming;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
 @Data
 @Builder
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class TravelPackageItemWithoutCode implements Serializable {
+public class TravelPackageItemForAdminAndTourGuide {
 
+    private String travelPackageCode;
     private String name;
     private Integer memberCount;
     private String estimatedDuration;
     private BigDecimal totalPrice;
-    private List<TravelPackageDetailItemWithoutCode> visitingLocations;
+    private TravelPackageStatus travelPackageStatus;
+    private List<TravelPackageDetailItemForAdminAndTourGuide> visitingLocations;
 
 }

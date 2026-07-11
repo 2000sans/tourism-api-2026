@@ -10,7 +10,7 @@ import java.io.Serializable;
 @Data
 @Builder
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class TravelPackageDetailItemWithCode {
+public class TravelPackageDetailItemForPublicAndTourist implements Serializable {
 
     private String travelPackageDetailCode;
     private String destinationTitle;

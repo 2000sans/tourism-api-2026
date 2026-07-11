@@ -36,8 +36,8 @@ public class TravelPackageController {
     }
 
     @RolesAllowed({"ADMIN", "TOUR_GUIDE", "TOURIST"})
-    @GetMapping(value = "/view-all-travel-packages-with-code", headers = "X-Api-Version=v1")
-    public List<TravelPackageItemWithCode> viewAllTravelPackagesWithCode(
+    @GetMapping(value = "/view-all-travel-packages/admin-and-tour-guide", headers = "X-Api-Version=v1")
+    public List<TravelPackageItemForAdminAndTourGuide> viewAllTravelPackagesForAdminAndTourGuide(
             @RequestParam("section-number") Integer sectionNumber) {
 
         log.trace("received request param, sectionNumber : {}", sectionNumber);
@@ -52,11 +52,11 @@ public class TravelPackageController {
         List<TravelPackage> fetchedTravelPackageList =
                 travelPackageService.getAllTravelPackages(PageRequest.of(page, size));
 
-        List<TravelPackageItemWithCode> rs = new ArrayList<>();
+        List<TravelPackageItemForAdminAndTourGuide> rs = new ArrayList<>();
 
         for(TravelPackage modelObjectOne : fetchedTravelPackageList){
 
-            TravelPackageItemWithCode travelPackageItemWithCode = TravelPackageItemWithCode
+            TravelPackageItemForAdminAndTourGuide travelPackageItemForAdminAndTourGuide = TravelPackageItemForAdminAndTourGuide
                     .builder()
                     .travelPackageCode(modelObjectOne.getTravelPackageCode())
                     .name(modelObjectOne.getName())
@@ -72,7 +72,7 @@ public class TravelPackageController {
 
             for(TravelPackageDetail modelObjectTwo : fetchedTravelPackageDetailList){
 
-                TravelPackageDetailItemWithCode travelPackageDetailItemWithCode = TravelPackageDetailItemWithCode
+                TravelPackageDetailItemForAdminAndTourGuide travelPackageDetailItemForAdminAndTourGuide = TravelPackageDetailItemForAdminAndTourGuide
                         .builder()
                         .travelPackageDetailCode(modelObjectTwo.getTravelPackageDetailCode())
                         .destinationTitle(modelObjectTwo.getDestinationTitle())
@@ -80,11 +80,11 @@ public class TravelPackageController {
                         .googleMapURL(modelObjectTwo.getGoogleMapURL())
                         .build();
 
-                travelPackageItemWithCode.getVisitingLocations().add(travelPackageDetailItemWithCode);
+                travelPackageItemForAdminAndTourGuide.getVisitingLocations().add(travelPackageDetailItemForAdminAndTourGuide);
 
             }
 
-            rs.add(travelPackageItemWithCode);
+            rs.add(travelPackageItemForAdminAndTourGuide);
 
         }
 
@@ -92,10 +92,10 @@ public class TravelPackageController {
 
     }
 
-
-    @GetMapping(value = "/public/view-all-travel-packages-without-code", headers = "X-Api-Version=v1")
-    @Cacheable(cacheNames = {"travelPackageWithoutCodeCache"}, key = "'travelPackageSectionNumber:' + #sectionNumber")
-    public List<TravelPackageItemWithoutCode> viewAllTravelPackagesPublic(
+    @RolesAllowed({"TOURIST"})
+    @GetMapping(value = "/view-all-travel-packages/tourist", headers = "X-Api-Version=v1")
+    @Cacheable(cacheNames = {"travelPackageCachePublicAndTourist"}, key = "'travelPackageSectionNumber:' + #sectionNumber")
+    public List<TravelPackageItemForPublicAndTourist> viewAllTravelPackagesPublic(
             @RequestParam("section-number") Integer sectionNumber) {
 
         log.trace("received request param, sectionNumber : {}", sectionNumber);
@@ -110,12 +110,13 @@ public class TravelPackageController {
         List<TravelPackage> fetchedTravelPackageList =
                 travelPackageService.getAllTravelPackages(PageRequest.of(page, size));
 
-        List<TravelPackageItemWithoutCode> rs = new ArrayList<>();
+        List<TravelPackageItemForPublicAndTourist> rs = new ArrayList<>();
 
         for(TravelPackage modelObjectOne : fetchedTravelPackageList){
 
-            TravelPackageItemWithoutCode travelPackageItemWithoutCode = TravelPackageItemWithoutCode
+            TravelPackageItemForPublicAndTourist travelPackageItemForPublicAndTourist = TravelPackageItemForPublicAndTourist
                     .builder()
+                    .travelPackageCode(modelObjectOne.getTravelPackageCode())
                     .name(modelObjectOne.getName())
                     .memberCount(modelObjectOne.getMemberCount())
                     .estimatedDuration(modelObjectOne.getEstimatedDuration())
@@ -128,18 +129,75 @@ public class TravelPackageController {
 
             for(TravelPackageDetail modelObjectTwo : fetchedTravelPackageDetailList){
 
-                TravelPackageDetailItemWithoutCode travelPackageDetailItemWithoutCode = TravelPackageDetailItemWithoutCode
+                TravelPackageDetailItemForPublicAndTourist travelPackageDetailItemForPublicAndTourist = TravelPackageDetailItemForPublicAndTourist
                         .builder()
+                        .travelPackageDetailCode(modelObjectTwo.getTravelPackageDetailCode())
                         .destinationTitle(modelObjectTwo.getDestinationTitle())
                         .destinationDescription(modelObjectTwo.getDestinationDescription())
                         .googleMapURL(modelObjectTwo.getGoogleMapURL())
                         .build();
 
-                travelPackageItemWithoutCode.getVisitingLocations().add(travelPackageDetailItemWithoutCode);
+                travelPackageItemForPublicAndTourist.getVisitingLocations().add(travelPackageDetailItemForPublicAndTourist);
 
             }
 
-            rs.add(travelPackageItemWithoutCode);
+            rs.add(travelPackageItemForPublicAndTourist);
+
+        }
+
+        return rs;
+
+    }
+
+    @GetMapping(value = "/public/view-all-travel-packages", headers = "X-Api-Version=v1")
+    @Cacheable(cacheNames = {"travelPackageCachePublicAndTourist"}, key = "'travelPackageSectionNumber:' + #sectionNumber")
+    public List<TravelPackageItemForPublicAndTourist> viewAllTravelPackagesForTourist(
+            @RequestParam("section-number") Integer sectionNumber) {
+
+        log.trace("received request param, sectionNumber : {}", sectionNumber);
+
+        if(sectionNumber < 1){
+            throw new IllegalArgumentException("section number cannot be less than 1");
+        }
+
+        int page = sectionNumber - 1;
+        int size = 4;
+
+        List<TravelPackage> fetchedTravelPackageList =
+                travelPackageService.getAllTravelPackages(PageRequest.of(page, size));
+
+        List<TravelPackageItemForPublicAndTourist> rs = new ArrayList<>();
+
+        for(TravelPackage modelObjectOne : fetchedTravelPackageList){
+
+            TravelPackageItemForPublicAndTourist travelPackageItemForPublicAndTourist = TravelPackageItemForPublicAndTourist
+                    .builder()
+                    .travelPackageCode(modelObjectOne.getTravelPackageCode())
+                    .name(modelObjectOne.getName())
+                    .memberCount(modelObjectOne.getMemberCount())
+                    .estimatedDuration(modelObjectOne.getEstimatedDuration())
+                    .totalPrice(modelObjectOne.getTotalPrice())
+                    .visitingLocations(new ArrayList<>())
+                    .build();
+
+            List<TravelPackageDetail> fetchedTravelPackageDetailList =
+                    travelPackageService.getTravelPackageDetailByTravelPackageId(modelObjectOne.getId());
+
+            for(TravelPackageDetail modelObjectTwo : fetchedTravelPackageDetailList){
+
+                TravelPackageDetailItemForPublicAndTourist travelPackageDetailItemForPublicAndTourist = TravelPackageDetailItemForPublicAndTourist
+                        .builder()
+                        .travelPackageDetailCode(modelObjectTwo.getTravelPackageDetailCode())
+                        .destinationTitle(modelObjectTwo.getDestinationTitle())
+                        .destinationDescription(modelObjectTwo.getDestinationDescription())
+                        .googleMapURL(modelObjectTwo.getGoogleMapURL())
+                        .build();
+
+                travelPackageItemForPublicAndTourist.getVisitingLocations().add(travelPackageDetailItemForPublicAndTourist);
+
+            }
+
+            rs.add(travelPackageItemForPublicAndTourist);
 
         }
 

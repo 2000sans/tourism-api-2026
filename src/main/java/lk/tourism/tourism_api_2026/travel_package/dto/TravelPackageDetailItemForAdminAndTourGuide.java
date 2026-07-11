@@ -5,13 +5,12 @@ import lombok.Data;
 import tools.jackson.databind.PropertyNamingStrategies;
 import tools.jackson.databind.annotation.JsonNaming;
 
-import java.io.Serializable;
-
 @Data
 @Builder
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class TravelPackageDetailItemWithoutCode implements Serializable {
+public class TravelPackageDetailItemForAdminAndTourGuide {
 
+    private String travelPackageDetailCode;
     private String destinationTitle;
     private String destinationDescription;
     private String googleMapURL;
