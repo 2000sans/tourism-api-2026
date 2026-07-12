@@ -5,11 +5,15 @@ import jakarta.validation.Valid;
 import lk.tourism.tourism_api_2026.travel_package.dto.*;
 import lk.tourism.tourism_api_2026.travel_package.model.TravelPackage;
 import lk.tourism.tourism_api_2026.travel_package.model.TravelPackageDetail;
+import lk.tourism.tourism_api_2026.travel_package.projections.TravelPackageDetailItemTouristAndPublicProjection;
+import lk.tourism.tourism_api_2026.travel_package.projections.TravelPackageItemTouristAndPublicProjection;
 import lk.tourism.tourism_api_2026.travel_package.service.TravelPackageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -202,6 +206,63 @@ public class TravelPackageController {
         }
 
         return rs;
+
+    }
+
+    @RolesAllowed({"TOURIST"})
+    @PostMapping(value = "/filter-travel-package-items/tourist", headers = "X-Api-Version=v1")
+    public Page<TravelPackageItemTouristAndPublicProjection> filterTravelPackagesTourist(@RequestBody FilterTravelPackageItemsRequest rq) {
+
+        log.trace("received request : {}", rq);
+
+        if(rq.getSectionNumber() < 1){
+            throw new IllegalArgumentException("section number cannot be less than 1");
+        }
+
+        int page = rq.getSectionNumber() - 1;
+        int size = rq.getSectionSize();
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        return travelPackageService.filterTravelPackageItemsForTouristAndPublic(rq, pageable);
+
+    }
+
+    @RolesAllowed({"TOURIST"})
+    @GetMapping(value = "/view-travel-package-detail-items/tourist", headers = "X-Api-Version=v1")
+    public List<TravelPackageDetailItemTouristAndPublicProjection> viewTravelPackageDetailItemsTourist(@RequestParam("travel-package-code") String travelPackageCode){
+
+        log.trace("received request param, travelPackageCode : {}", travelPackageCode);
+
+        return travelPackageService.getTravelPackageDetailItemsByTravelPackageCode(travelPackageCode);
+
+    }
+
+
+    @PostMapping(value = "/public/filter-travel-package-items", headers = "X-Api-Version=v1")
+    public Page<TravelPackageItemTouristAndPublicProjection> filterTravelPackagesPublic(@RequestBody FilterTravelPackageItemsRequest rq) {
+
+        log.trace("received request : {}", rq);
+
+        if(rq.getSectionNumber() < 1){
+            throw new IllegalArgumentException("section number cannot be less than 1");
+        }
+
+        int page = rq.getSectionNumber() - 1;
+        int size = rq.getSectionSize();
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        return travelPackageService.filterTravelPackageItemsForTouristAndPublic(rq, pageable);
+
+    }
+
+    @GetMapping(value = "/public/view-travel-package-detail-items", headers = "X-Api-Version=v1")
+    public List<TravelPackageDetailItemTouristAndPublicProjection> viewTravelPackageDetailItemsPublic(@RequestParam("travel-package-code") String travelPackageCode){
+
+        log.trace("received request param, travelPackageCode : {}", travelPackageCode);
+
+        return travelPackageService.getTravelPackageDetailItemsByTravelPackageCode(travelPackageCode);
 
     }
 

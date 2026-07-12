@@ -1,11 +1,14 @@
 package lk.tourism.tourism_api_2026.travel_package.service.impl;
 
+import lk.tourism.tourism_api_2026.travel_package.dto.FilterTravelPackageItemsRequest;
 import lk.tourism.tourism_api_2026.travel_package.exception.TravelPackageNotCreatedException;
 import lk.tourism.tourism_api_2026.travel_package.dto.CreateTravelPackageRequest;
 import lk.tourism.tourism_api_2026.travel_package.dto.TravelPackageDetailHolder;
 import lk.tourism.tourism_api_2026.travel_package.model.TravelPackage;
 import lk.tourism.tourism_api_2026.travel_package.model.TravelPackageDetail;
 import lk.tourism.tourism_api_2026.travel_package.model.enums.TravelPackageStatus;
+import lk.tourism.tourism_api_2026.travel_package.projections.TravelPackageDetailItemTouristAndPublicProjection;
+import lk.tourism.tourism_api_2026.travel_package.projections.TravelPackageItemTouristAndPublicProjection;
 import lk.tourism.tourism_api_2026.travel_package.repository.TravelPackageDetailRepository;
 import lk.tourism.tourism_api_2026.travel_package.repository.TravelPackageRepository;
 import lk.tourism.tourism_api_2026.travel_package.service.TravelPackageService;
@@ -80,6 +83,28 @@ public class TravelPackageServiceImpl implements TravelPackageService {
         Page<TravelPackage> travelPackagePage = travelPackageRepository.findAll(pageable);
 
         return travelPackagePage.getContent();
+
+    }
+
+    @Override
+    public Page<TravelPackageItemTouristAndPublicProjection> filterTravelPackageItemsForTouristAndPublic(FilterTravelPackageItemsRequest rq, Pageable pageable) {
+
+        return travelPackageRepository.findTravelPackageItemsForTouristAndPublic(
+                rq.getName(),
+                rq.getMemberCount(),
+                rq.getEstimatedDuration(),
+                rq.getTotalPrice(),
+                pageable
+        );
+
+    }
+
+    @Override
+    public List<TravelPackageDetailItemTouristAndPublicProjection> getTravelPackageDetailItemsByTravelPackageCode(String travelPackageCode) {
+
+        TravelPackage fetchedTravelPackage = travelPackageRepository.findByTravelPackageCode(travelPackageCode);
+
+        return travelPackageDetailRepository.findByTravelPackage(fetchedTravelPackage);
 
     }
 
