@@ -55,7 +55,7 @@ public class SignInSignUpController {
 
     }
 
-    @PostMapping(value = "sign-up/tour-guide", headers = "X-Api-Version=v1")
+    @PostMapping(value = "/sign-up/tour-guide", headers = "X-Api-Version=v1")
     @ResponseStatus(HttpStatus.CREATED)
     public void tourGuideSignUp(@RequestBody TourGuideSignUpRequest rq){
 
@@ -63,7 +63,7 @@ public class SignInSignUpController {
 
     }
 
-    @PostMapping("/sign-up/tourist")
+    @PostMapping(value = "/sign-up/tourist", headers = "X-Api-Version=v1")
     @ResponseStatus(HttpStatus.CREATED)
     public void touristSignUp(@RequestBody TouristSignUpRequest rq){
 
