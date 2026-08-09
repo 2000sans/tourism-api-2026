@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +26,7 @@ import java.util.Map;
 @RestController
 @RequestMapping(value = "/public")
 @RequiredArgsConstructor
-public class SignInSignUpController {
+public class SignInSignUpSignOutController {
 
     private final AuthenticationManager authenticationManager;
     private final CustomJwtUtil customJwtUtil;
@@ -68,6 +69,15 @@ public class SignInSignUpController {
     public void touristSignUp(@RequestBody TouristSignUpRequest rq){
 
         signInSignUpService.touristSignUp(rq);
+
+    }
+
+    @GetMapping(value = "/sign-out", headers = "X-Api-Version=v1")
+    public ResponseEntity<Map<String, String>> signOut() {
+
+        SecurityContextHolder.clearContext();
+
+        return ResponseEntity.ok(Collections.singletonMap("message", "signed out successfully"));
 
     }
 
