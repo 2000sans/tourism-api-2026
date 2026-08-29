@@ -8,6 +8,7 @@ MariaDB Driver [SQL]
 Flyway Migration [SQL]
 Spring Cache Abstraction [I/O]
 Spring Security [Security]
+Spring for RabbitMQ [Messaging]
 
 Spring dependencies added externally :
 
