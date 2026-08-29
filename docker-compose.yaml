@@ -14,11 +14,19 @@ services:
 
       SPRING_REDIS_HOST: tourism-redis-server
 
+      SPRING_RABBITMQ_HOST: tourism-rabbitmq-server
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: root
+      SPRING_RABBITMQ_PASSWORD: tp
+
       SPRING_PROFILES_ACTIVE: live_docker
+
     depends_on:
       tourism-mariadb-server:
         condition: service_healthy
       tourism-redis-server:
+        condition: service_healthy
+      tourism-rabbitmq-server:
         condition: service_healthy
     networks:
       - tourism-network
@@ -49,6 +57,31 @@ services:
       timeout: 10s
       retries: 10
       start_period: 30s
+    networks:
+      - tourism-network
+    restart: unless-stopped
+
+  tourism-rabbitmq-server:
+    image: rabbitmq:4-management
+    container_name: tourism-rabbitmq-container
+
+    environment:
+      RABBITMQ_DEFAULT_USER: root
+      RABBITMQ_DEFAULT_PASS: tp
+
+    ports:
+      - "2000:15672"
+
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
+
     networks:
       - tourism-network
     restart: unless-stopped
